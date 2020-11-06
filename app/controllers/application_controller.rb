@@ -26,8 +26,7 @@ class ApplicationController < ActionController::API
             puts decoded_token.class
             user_id = decoded_token[0]['user_id']
             @user = User.find_by(id: user_id)
-        else
-            nil
+       
         end
     end
     
@@ -36,7 +35,7 @@ class ApplicationController < ActionController::API
     end
     
     def require_login
-        render json: {message: 'Please Login'}, status: :unauthorized unless logged_in?
+        render json: {message: 'Please Login or Sign up to see content'}, status: :unauthorized unless logged_in?
     end
     
 end
