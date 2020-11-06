@@ -1,10 +1,11 @@
 class UsersController < ApplicationController
+    skip_before_action: require_login, only: [:create]
     def create
-        user = User.new(user_params)
-        if user.save
+        user = User.create(user_params)
+        if user.valid?
             payload = {user_id: user.id}
             token = encode_token(payload)
-            render json: UserSerializer.new(user).serializable_hash, jwt: token
+            render json: {user: UserSerializer.new(user).serializable_hash, jwt: token}, status: :created
         else
             render json: {errors: user.errors.full_messages}, status: :not_acceptable
         end
