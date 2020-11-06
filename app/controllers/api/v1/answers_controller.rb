@@ -1,4 +1,4 @@
-class AnswersController < ApplicationController
+class Api::V1::AnswersController < ApplicationController
   before_action :find_answer, only: [:update, :destroy]
   def index
     answers = Answer.all

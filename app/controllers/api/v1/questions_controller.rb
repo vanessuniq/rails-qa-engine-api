@@ -1,4 +1,4 @@
-class QuestionsController < ApplicationController
+class Api::V1::QuestionsController < ApplicationController
   def index
     questions = Question.all
     render json: QuestionSerializer.new(questions).serializable_hash
