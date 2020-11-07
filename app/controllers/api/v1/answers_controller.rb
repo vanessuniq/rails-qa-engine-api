@@ -2,13 +2,13 @@ class Api::V1::AnswersController < ApplicationController
   before_action :find_answer, only: [:update, :destroy]
   def index
     answers = Answer.all
-    render json: AnswerSerializer.new(answers).serializable_hash
+    render json: {answers: AnswerSerializer.new(answers)}, status: :ok
   end
 
   def create
     answer = Answer.new(answer_params)
     if answer.save
-      render json: AnswerSerializer.new(answer).serializable_hash
+      render json: { answer: AnswerSerializer.new(answer) }, status: :created
     else
       render json: {errors: answer.errors.full_messages}, status: :not_acceptable 
     end
@@ -16,7 +16,7 @@ class Api::V1::AnswersController < ApplicationController
 
   def update
     if @answer.update(answer_params)
-      render json: AnswerSerializer.new(@answer).serializable_hash
+      render json: { answer: AnswerSerializer.new(@answer) }
     else
       render json: {error: @answer.errors.full_messages.first}, status: :not_acceptable 
     end
@@ -29,7 +29,7 @@ class Api::V1::AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:author, :body, :question_id)
+    params.require(:answer).permit(:user_id, :body, :question_id)
   end
 
   def find_answer
