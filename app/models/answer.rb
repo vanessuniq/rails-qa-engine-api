@@ -1,4 +1,9 @@
 class Answer < ApplicationRecord
   belongs_to :question
-  validates_presence_of :author, :body, :question_id
+  belongs_to :user
+
+  
+  before_create :add_reactions
+
+  validates_presence_of :user_id, :body, :question_id
 end

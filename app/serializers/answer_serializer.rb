@@ -1,5 +1,5 @@
-class AnswerSerializer
-  include FastJsonapi::ObjectSerializer
-  attributes :author, :body, :created_at, :question_id
+class AnswerSerializer < ActiveModel::Serializer
+  attributes :id, :body, :reactions, :created_at
   belongs_to :question
+  belongs_to :user
 end
