@@ -1,5 +1,7 @@
 class Api::V1::AnswersController < ApplicationController
   before_action :find_answer, only: [:update, :destroy]
+  skip_before_action :require_login, only: [:index]
+  
   def index
     answers = Answer.all
     render json: {answers: AnswerSerializer.new(answers)}, status: :ok
