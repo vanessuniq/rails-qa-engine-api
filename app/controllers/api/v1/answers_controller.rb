@@ -4,7 +4,7 @@ class Api::V1::AnswersController < ApplicationController
   
   def index
     answers = Answer.all
-    render json: {answers: AnswerSerializer.new(answers)}, status: :ok
+    render json: answers, status: :ok
   end
 
   def create
