@@ -4,7 +4,7 @@ Rails.application.routes.draw do
       resources :questions, except: [:new, :show, :edit, :update]
       resources :answers, except: [:new, :edit, :show]
       resources :votes, only: [:create, :destroy]
-      resources :users, only: [:create] #handle signup
+      resources :users, only: [:create, :index] #handle signup, query users
       post '/login', to: "auth#login" #handles login for existing users
       get '/auto_login', to: 'auth#auto_login' #handles auto login upon successful signup/login
       
