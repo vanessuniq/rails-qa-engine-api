@@ -2,7 +2,7 @@ class Api::V1::QuestionsController < ApplicationController
   skip_before_action :require_login, only: [:index]
 
   def index
-    questions = Question.all
+    questions = Question.order(created_at: :DESC)
     render json: questions, status: :ok
   end
 
