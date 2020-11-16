@@ -3,9 +3,9 @@ class Api::V1::VotesController < ApplicationController
     before_action :find_vote, only: [:destory]
     
     def create
-        if already_voted?
-            redirect_to action: "destroy", id: Vote.where(user_id: current_user.id, votable: @votable_object)
-        else
+        if !already_voted?
+            #redirect_to action: "destroy", id: Vote.where(user_id: current_user.id, votable: @votable_object)
+        #else
             @votable_object.votes.create(user_id: current_user.id)
             render json: render_object(@votable_object)
         end
