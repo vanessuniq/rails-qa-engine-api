@@ -1,4 +1,5 @@
 class Api::V1::QuestionsController < ApplicationController
+  before_action :find_question, only: [:update, :destroy]
   skip_before_action :require_login, only: [:index]
 
   def index
@@ -15,10 +16,17 @@ class Api::V1::QuestionsController < ApplicationController
     end
   end
 
+  def update
+    if @question.update(question_params)
+      render json: { question: QuestionSerializer.new(@question) }
+    else
+      render json: {error: @question.errors.full_messages.first}, status: :not_acceptable 
+    end
+  end
+
   def destroy
-    question = Question.find_by(id: params[:id])
-    if question
-      question.destroy
+    if @question
+      @question.destroy
     else
       render json: {error: 'Unable to delete question, please try again'}, status: :unauthorized
     end
@@ -28,6 +36,11 @@ class Api::V1::QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body, :topic, :user_id)
+  end
+
+  def find_question
+    @question = Question.find_by(id: params[:id])
+    render json: {error: 'Question not found'} unless @question
   end
   
 end
