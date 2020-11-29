@@ -4,10 +4,11 @@ class Api::V1::VotesController < ApplicationController
     
     def create
         if !already_voted?
-            #redirect_to action: "destroy", id: Vote.where(user_id: current_user.id, votable: @votable_object)
-        #else
             @votable_object.votes.create(user_id: current_user.id)
             render json: render_object(@votable_object)
+           
+        else
+            render json: {message: 'you have already upvoted this post'}
         end
        
     end
@@ -28,7 +29,7 @@ class Api::V1::VotesController < ApplicationController
         Vote.where(user_id: current_user.id, votable: @votable_object).exists?
     end
     def find_vote
-        @vote = Vote.find_by(id: params[:id])
+        @vote = Vote.where(user_id: current_user.id, votable: @votable_object)
     end
     
     def render_object(object)
