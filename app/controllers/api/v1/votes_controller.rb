@@ -1,6 +1,5 @@
 class Api::V1::VotesController < ApplicationController
-    before_action :find_votable_object
-    before_action :find_vote, only: [:destory]
+    before_action :find_votable_object, only: [:create]
     
     def create
         if !already_voted?
@@ -14,9 +13,11 @@ class Api::V1::VotesController < ApplicationController
     end
 
     def destroy
-        votable_object = @vote.votable
-        @vote.destroy
-        render json: render_object(votable_object)
+        @vote = Vote.find_by(id: params[:id])
+        if @vote
+            @vote.destroy
+        end
+        
     end
     
     private
@@ -28,9 +29,7 @@ class Api::V1::VotesController < ApplicationController
     def already_voted?
         Vote.where(user_id: current_user.id, votable: @votable_object).exists?
     end
-    def find_vote
-        @vote = Vote.where(user_id: current_user.id, votable: @votable_object)
-    end
+    
     
     def render_object(object)
         if object.class == Question
